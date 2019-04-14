@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Inventory App</string>
     <string name="uri_scheme">content://</string>
+
+    <string name="error_item_name_required">Item name is required</string>
+    <string name="error_item_price_required">Item price is required.</string>
+    <string name="error_item_quantity_required">Item quantity is required.</string>
+    <string name="error_insert_failed">Insert failed for</string>
+    <string name="exception_query_not_supported">Query not supported for </string>
+    <string name="exception_insert_not_supported">Item insert not supported for </string>
+    <string name="exception_update_not_supported">Item update not supported for </string>
+    <string name="exception_unknown_uri_type">Unknown URI</string>
+    <string name="exception_with_match">with match</string>
+    <string name="layout_emptyView_addItem">Add an item now...</string>
 </resources>
