@@ -1,5 +1,6 @@
 package com.example.android.inventoryapp;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_detail);
 
         // TODO: Get Uri from intent
+        Intent intent = getIntent();
+        mCurrentUri = intent.getData();
 
         // TODO: Using retrieved Uri Set activity title
             // Initialize Loader when in Edit mode

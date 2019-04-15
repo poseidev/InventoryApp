@@ -4,5 +4,109 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/layoutInputFields"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!-- Name -->
+        <EditText
+            android:id="@+id/editProductName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:hint="Name"
+            style="@style/InputFieldTop"/>
+
+        <!-- Description -->
+        <EditText
+            android:id="@+id/editProductDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:hint="Description"
+            style="@style/InputField"/>
+
+        <!-- Quantity -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/labelProductQuantity"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="3"
+                android:text="Quantity"
+                style="@style/ViewOnStart"/>
+
+            <EditText
+                android:id="@+id/editProductQuantityDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:inputType="number"
+                android:layout_weight="3"/>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"/>
+
+            <Button
+                android:id="@+id/buttonDecreaseQuantity"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="-"
+                android:textAppearance="?android:textAppearanceLarge"/>
+            <EditText
+                android:id="@+id/editProductQuantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:layout_weight="3"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:hint="0"/>
+            <Button
+                android:id="@+id/buttonIncreaseQuantity"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                android:layout_weight="1"
+                android:text="+"
+                android:textAppearance="?android:textAppearanceLarge"/>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editProductPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="Price"
+            style="@style/InputField"/>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabDeleteProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutInputFields"
+        android:layout_toLeftOf="@id/fabSaveProduct"
+        style="@style/ButtonStyle"
+        android:src="@drawable/ic_delete_product"/>
+
+    <android.support.design.widget.FloatingActionButton
+    android:id="@+id/fabSaveProduct"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/layoutInputFields"
+    android:layout_alignParentRight="true"
+        style="@style/ButtonStyle"
+    android:src="@drawable/ic_save_product"/>
 
 </RelativeLayout>
