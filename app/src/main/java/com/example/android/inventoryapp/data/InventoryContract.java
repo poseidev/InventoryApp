@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 
 import com.example.android.inventoryapp.R;
 
-public class InventoryContract {
+public final class InventoryContract {
 
     /**
      * Empty class prevents accidental instantiating.
@@ -17,12 +17,13 @@ public class InventoryContract {
     /**
      * Name for the entire provider - like a domain name to its website
      * */
-    public static final String CONTENT_AUTHORITY = "com.example.android.pets";
+    public static final String CONTENT_AUTHORITY = "com.example.android.inventoryapp";
 
     /**
      * Base of all URIs which apps will use to contact the contact provider
      */
-    public static final Uri BASE_CONTENT_URI = Uri.parse(Resources.getSystem().getString(R.string.uri_scheme) + CONTENT_AUTHORITY);
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    // Resources.getSystem().getString(R.string.uri_scheme)
 
     /**
      *  Appended to the base content URI
@@ -47,12 +48,12 @@ public class InventoryContract {
 
         public static final String _ID = BaseColumns._ID;
 
-        public static final String COLUMN_ITEM_NAME ="item";
+        public static final String COLUMN_PRODUCT_NAME ="name";
 
-        public static final String COLUMN_ITEM_DESCRIPTION ="description";
+        public static final String COLUMN_PRODUCT_DESCRIPTION ="description";
 
-        public static final String COLUMN_ITEM_QUANTITY ="quantity";
+        public static final String COLUMN_PRODUCT_QUANTITY ="quantity";
 
-        public static final String COLUMN_ITEM_PRICE ="price";
+        public static final String COLUMN_PRODUCT_PRICE ="price";
     }
 }

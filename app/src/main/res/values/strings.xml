@@ -12,4 +12,19 @@
     <string name="exception_unknown_uri_type">Unknown URI</string>
     <string name="exception_with_match">with match</string>
     <string name="layout_emptyView_addItem">Add an item now...</string>
+    <string name="buttonTextSale">Sale</string>
+    <string name="hint_product_description">Description</string>
+    <string name="hint_product_quantity">Quantity</string>
+    <string name="hint_product_price">Price</string>
+    <string name="confirmation_order_product">Make a call to order</string>
+    <string name="confirmation_delete_product">Delete product</string>
+    <string name="dialog_text_yes">Yes</string>
+    <string name="dialog_text_no">No</string>
+    <string name="message_product_deleted">Product %1$s deleted.</string>
+    <string name="validation_product_name_required">Product name is required.</string>
+    <string name="hint_name">Name</string>
+    <string name="label_field_name">Name</string>
+    <string name="label_field_quantity">Quantity</string>
+    <string name="label_field_description">Description</string>
+    <string name="label_field_price">Price</string>
 </resources>

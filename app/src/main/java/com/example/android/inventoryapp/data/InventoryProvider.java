@@ -4,7 +4,6 @@ import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -12,6 +11,7 @@ import android.util.Log;
 
 import com.example.android.inventoryapp.R;
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
+
 
 public class InventoryProvider extends ContentProvider {
 
@@ -43,7 +43,7 @@ public class InventoryProvider extends ContentProvider {
      * @return The string mapped to the given resource Id
      */
     private String getResourceString(Integer resourceId) {
-        return Resources.getSystem().getString(resourceId);
+        return getContext().getResources().getString(resourceId);
     }
 
     private void throwIllegalArgumentException(String message) {
@@ -68,6 +68,16 @@ public class InventoryProvider extends ContentProvider {
                 selection = InventoryEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
 
+                cursor = db.query(
+                        InventoryEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+
                 // no break here
                 // proceeds to execute the query command in the case below
 
@@ -79,14 +89,15 @@ public class InventoryProvider extends ContentProvider {
                         selectionArgs,
                         null,
                         null,
-                        sortOrder
-                );
+                        sortOrder);
 
                 break;
                 
             default:
                 throwIllegalArgumentException(getResourceString(R.string.exception_query_not_supported) + uri + ".");
         }
+
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return cursor;
     }
@@ -117,20 +128,20 @@ public class InventoryProvider extends ContentProvider {
         return type;
     }
 
-    private Uri insertItem(Uri uri, ContentValues values) {
+    private Uri insertProduct(Uri uri, ContentValues values) {
         // Item name cannot be null
-        String name = values.getAsString(InventoryEntry.COLUMN_ITEM_NAME);
+        String name = values.getAsString(InventoryEntry.COLUMN_PRODUCT_NAME);
         if(name == null) {
             throwIllegalArgumentException(getResourceString(R.string.error_item_name_required));
         }
 
         // Price cannot be null
-        Double price = values.getAsDouble(InventoryEntry.COLUMN_ITEM_PRICE);
+        Double price = values.getAsDouble(InventoryEntry.COLUMN_PRODUCT_PRICE);
         if(price == null) {
             throwIllegalArgumentException(getResourceString(R.string.error_item_price_required));
         }
 
-        Integer quantity = values.getAsInteger(InventoryEntry.COLUMN_ITEM_QUANTITY);
+        Integer quantity = values.getAsInteger(InventoryEntry.COLUMN_PRODUCT_QUANTITY);
         if(quantity == null) {
             throwIllegalArgumentException(getResourceString(R.string.error_item_quantity_required));
         }
@@ -148,10 +159,12 @@ public class InventoryProvider extends ContentProvider {
             return null;
         }
 
+        getContext().getContentResolver().notifyChange(uri, null);
+
         return ContentUris.withAppendedId(uri, id);
     }
 
-    private int deleteItems(String selection, String[] selectionArgs) {
+    private int deleteProducts(String selection, String[] selectionArgs) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         int deletedRowsCount = db.delete(InventoryEntry.TABLE_NAME,
@@ -182,11 +195,14 @@ public class InventoryProvider extends ContentProvider {
 
         switch (uriPatternUd) {
             case ITEMS:
-                insertUri = insertItem(uri, values);
+                insertUri = insertProduct(uri, values);
+                break;
 
             default:
                 throwIllegalArgumentException(getResourceString(R.string.exception_insert_not_supported) + uri);
         }
+
+        getContext().getContentResolver().notifyChange(uri, null);
 
         return insertUri;
     }
@@ -194,7 +210,7 @@ public class InventoryProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
 
-        int deletedRowCount = 0;
+        int deletedRowsCount = 0;
 
         int uriPatternId = sUriMatcher.match(uri);
 
@@ -206,14 +222,18 @@ public class InventoryProvider extends ContentProvider {
                 // no break, proceed executing delete in the case below
 
             case ITEMS:
-                deletedRowCount = deleteItems(selection, selectionArgs);
+                deletedRowsCount = deleteProducts(selection, selectionArgs);
                 break;
 
             default:
                 throwIllegalArgumentException("Delete item not supported for " + uri);
         }
 
-        return deletedRowCount;
+        if(deletedRowsCount > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return deletedRowsCount;
     }
 
     @Override
@@ -235,6 +255,10 @@ public class InventoryProvider extends ContentProvider {
 
             default:
                 throwIllegalArgumentException(getResourceString(R.string.exception_update_not_supported) + uri);
+        }
+
+        if(updatedRowsCount > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
         }
 
         return updatedRowsCount;

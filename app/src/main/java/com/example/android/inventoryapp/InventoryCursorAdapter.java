@@ -1,11 +1,21 @@
 package com.example.android.inventoryapp;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 
 public class InventoryCursorAdapter extends CursorAdapter {
 
@@ -37,6 +47,40 @@ public class InventoryCursorAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        // TODO:  Fill views in list_item.xml with data from curosr
+        int productIdColumnIndex = cursor.getColumnIndex(InventoryEntry._ID);
+        int productNameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_NAME);
+        int productQuantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_QUANTITY);
+        int productPriceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_PRICE);
+
+        final int id = cursor.getInt(productIdColumnIndex);
+        String name = cursor.getString(productNameColumnIndex);
+        final int quantity = cursor.getInt(productQuantityColumnIndex);
+        double price = cursor.getDouble(productPriceColumnIndex);
+
+        TextView productNameTextView = view.findViewById(R.id.textProductName);
+        TextView productQuantityTextView = view.findViewById(R.id.textProductQuantity);
+        TextView productPriceTextView = view.findViewById(R.id.textProductPrice);
+
+        productNameTextView.setText(name);
+        productQuantityTextView.setText(Integer.toString(quantity));
+        productPriceTextView.setText(Double.toString(price));
+
+        Button saleButton = view.findViewById(R.id.buttonSale);
+
+        final Context contextTemp = context;
+
+        saleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int newQuantity =(quantity > 0) ? (quantity - 1) : quantity;
+
+                ContentValues values = new ContentValues();
+                values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, newQuantity);
+
+                Uri uri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
+                contextTemp.getContentResolver().update(uri, values, null, null);
+
+            }
+        });
     }
 }

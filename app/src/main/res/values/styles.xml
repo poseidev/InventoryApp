@@ -8,6 +8,28 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ViewOnTopStart">
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+    </style>
+
+    <style name="ViewOnStart">
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+    </style>
+
     <style name="InputFieldTop">
         <item name="android:layout_marginLeft">12dp</item>
         <item name="android:layout_marginStart">12dp</item>
@@ -28,15 +50,11 @@
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
 
-    <style name="ViewOnStart">
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:layout_marginRight">4dp</item>
-        <item name="android:layout_marginEnd">4dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    <style name="RowField">
+        <item name="android:gravity">center_vertical</item>
     </style>
+
+
 
     <style name="ButtonStyle">
         <item name="android:layout_margin">12dp</item>
