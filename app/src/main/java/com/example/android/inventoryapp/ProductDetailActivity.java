@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 
+import java.util.Locale;
+
 public class ProductDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private EditText mProductName;
@@ -58,12 +60,12 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
 
         // Initialize activity title
         if (mCurrentUri == null) {
-            setTitle("Add New Product");
-            mProductQuantity.setText("0");
-            mProductQuantityUpdate.setText("0");
+            setTitle(R.string.activity_title_add_new_product);
+            mProductQuantity.setText(R.string.input_value_zero);
+            mProductQuantityUpdate.setText(R.string.input_value_zero);
         }
         else {
-            setTitle("Update Product");
+            setTitle(R.string.activity_title_update_product);
 
             LoaderManager.getInstance(this).initLoader(INVENTORY_LOADER, null, this);
         }
@@ -76,7 +78,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
     }
 
     private void initializeButtonsClickListeners() {
-        // Implement delete button click listener
+        // Delete button
         FloatingActionButton fabDeleteProduct = findViewById(R.id.fabDeleteProduct);
         fabDeleteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +98,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
                     }
                 };
 
-                String confirmationMessage = getString(R.string.confirmation_delete_product) + " " + mProductNameString + "?";
+                String confirmationMessage = String.format(getString(R.string.confirmation_delete_product), mProductNameString);
                 showConfirmationDialog(confirmationMessage, deleteListener);
             }
         });
@@ -169,6 +171,10 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         mProductPrice.getText().clear();
     }
 
+    /**
+     * Update input quantity by a click of increase (+) or decrease (-) button
+     * @param isIncrease true = increase input quantity; false = decrease
+     */
     private void setProductQuantity(boolean isIncrease){
         String quantityUpdateString = mProductQuantityUpdate.getText().toString().trim();
         String currentQuantityString = mProductQuantity.getText().toString().trim();
@@ -180,11 +186,11 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
 
         if(!isIncrease && newQuantity < 1) { newQuantity = 0; }
 
-        mProductQuantity.setText(Integer.toString(newQuantity));
+        mProductQuantity.setText(String.format(Locale.getDefault(), "%1$d", newQuantity));
     }
 
     private void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -210,9 +216,6 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         alertDialog.show();
     }
 
-
-    // TODO: Method to display AlertDialog for order production confirmation
-
     private ContentValues getContentValues()
     {
         String name = mProductName.getText().toString().trim();
@@ -231,10 +234,6 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, price);
 
         return values;
-    }
-
-    private void throwIllegalArgumentException(String message) {
-        throw new IllegalArgumentException(message);
     }
 
     private boolean isValidProduct(ContentValues values) {
@@ -260,11 +259,17 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             return;
         }
 
+        String message;
+
         // Save new product
         if(uri == null) {
             uri = InventoryEntry.CONTENT_URI;
 
+            mProductNameString = values.getAsString(InventoryEntry.COLUMN_PRODUCT_NAME);
+
             getContentResolver().insert(uri, values);
+
+            message = String.format(getString(R.string.message_product_saved), mProductNameString);
         }
         else {
             // Update existing product
@@ -272,7 +277,11 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
                     values,
                     null,
                     null);
+
+            message = String.format(getString(R.string.message_product_updated), mProductNameString);
         }
+
+        showMessage(message);
 
         finish();
     }
@@ -303,7 +312,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         };
 
         String productName = mProductNameString;
-        String confirmationMessage = getString(R.string.confirmation_order_product) + " " + productName + "?";
+        String confirmationMessage = String.format(Locale.getDefault(), getString(R.string.confirmation_order_product), productName);
 
         showConfirmationDialog(confirmationMessage, clickListener);
     }

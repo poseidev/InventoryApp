@@ -2,60 +2,116 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ViewOnTopStart">
+    <style name="ColumnLabelOnStart">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginRight">4dp</item>
-        <item name="android:layout_marginEnd">4dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:gravity">center_vertical</item>
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:color">@color/colorColumnLabel</item>
     </style>
 
-    <style name="ViewOnStart">
+    <style name="ColumnLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:color">@color/colorColumnLabel</item>
+    </style>
+
+    <style name="LabelOnTopStart">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginRight">4dp</item>
         <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    </style>
+
+    <style name="TextProductDetail">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    </style>
+
+    <style name="TextProductDetailPrice">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    </style>
+
+    <style name="ButtonOnRow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
     </style>
 
     <style name="InputFieldTop">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
         <item name="android:layout_marginLeft">12dp</item>
         <item name="android:layout_marginStart">12dp</item>
-        <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginRight">4dp</item>
         <item name="android:layout_marginEnd">4dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
 
     <style name="InputField">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
         <item name="android:layout_marginLeft">12dp</item>
         <item name="android:layout_marginStart">12dp</item>
-        <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginRight">4dp</item>
         <item name="android:layout_marginEnd">4dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
 
-    <style name="RowField">
-        <item name="android:gravity">center_vertical</item>
+    <style name="InputFieldQuantity">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
-
-
-
     <style name="ButtonStyle">
         <item name="android:layout_margin">12dp</item>
     </style>

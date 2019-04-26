@@ -6,10 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/inventoryListContainer"/>
+    <!-- Empty view -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,12 +17,50 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/layout_emptyView_addItem"
+            android:text="@string/label_empty_view_text"
             android:textAppearance="?android:textAppearanceMedium"
             android:id="@+id/emptyViewText"/>
-
     </RelativeLayout>
 
+    <!-- Column labels -->
+    <LinearLayout
+        android:id="@+id/listColumnLabels"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true">
+        <TextView
+            android:id="@+id/textProductNameLabel"
+            android:layout_weight="2"
+            android:text="@string/column_label_product"
+            android:textAlignment="center"
+            style="@style/ColumnLabel"/>
+        <TextView
+            android:id="@+id/textProductQuantityLabel"
+            android:layout_weight="1"
+            android:text="@string/column_label_quantity"
+            android:textAlignment="center"
+            style="@style/ColumnLabel"/>
+        <TextView
+            android:id="@+id/textProductPriceLabel"
+            android:layout_weight="2"
+            android:text="@string/column_label_price"
+            android:textAlignment="center"
+            style="@style/ColumnLabel"/>
+        <View
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="2" />
+    </LinearLayout>
+
+    <!-- Displays list of products -->
+    <ListView
+        android:id="@+id/inventoryListContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listColumnLabels"/>
+
+    <!-- Add new product button -->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddNewProduct"
         android:layout_width="wrap_content"

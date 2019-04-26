@@ -23,7 +23,6 @@ public final class InventoryContract {
      * Base of all URIs which apps will use to contact the contact provider
      */
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-    // Resources.getSystem().getString(R.string.uri_scheme)
 
     /**
      *  Appended to the base content URI

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,37 +18,29 @@
             <!-- Name label -->
             <TextView
                 android:id="@+id/labelProductName"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
                 android:text="@string/label_field_name"
                 android:layout_weight="1"
-                style="@style/ViewOnTopStart"/>
+                style="@style/LabelOnTopStart"/>
 
             <!-- Description label -->
             <TextView
                 android:id="@+id/labelProductDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
                 android:text="@string/label_field_description"
                 android:layout_weight="1"
-                style="@style/ViewOnStart"/>
+                style="@style/TextProductDetail"/>
 
             <!-- Quantity label -->
             <TextView
                 android:id="@+id/labelProductQuantity"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
                 android:text="@string/label_field_quantity"
                 android:layout_weight="1"
-                style="@style/ViewOnStart"/>
+                style="@style/TextProductDetail"/>
 
             <TextView
                 android:id="@+id/labelProductPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
                 android:text="@string/label_field_price"
                 android:layout_weight="1"
-                style="@style/ViewOnStart"/>
+                style="@style/TextProductDetail"/>
         </LinearLayout>
 
         <!-- Input fields -->
@@ -63,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:inputType="textCapWords"
+                android:inputType="text"
                 android:hint="@string/hint_name"
                 style="@style/InputFieldTop"/>
 
@@ -73,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:inputType="textCapWords"
+                android:inputType="text"
                 android:hint="@string/hint_product_description"
                 style="@style/InputField"/>
 
@@ -81,45 +72,44 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical">
+                android:layout_weight="1">
 
                 <TextView
                     android:id="@+id/editProductQuantityDisplay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    style="@style/InputField"/>
-
-                <!-- Divider -->
-               <!-- <View
-                    android:layout_width="72dp"
-                    android:layout_height="match_parent"/>-->
+                    style="@style/InputFieldQuantity"/>
 
                 <!-- Decrease and Increase buttons -->
                 <Button
                     android:id="@+id/buttonDecreaseQuantity"
                     android:layout_width="48dp"
                     android:layout_height="wrap_content"
-                    android:text="-"
+                    android:layout_toStartOf="@id/editProductQuantity"
                     android:layout_toLeftOf="@id/editProductQuantity"
-                    android:textAppearance="?android:textAppearanceLarge"/>
+                    android:text="@string/button_label_decrease"
+                    android:textAppearance="?android:textAppearanceLarge" />
+
                 <EditText
                     android:id="@+id/editProductQuantity"
-                    android:layout_width="wrap_content"
+                    android:layout_width="48dp"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textAlignment="center"
+                    android:layout_toStartOf="@id/buttonIncreaseQuantity"
                     android:layout_toLeftOf="@id/buttonIncreaseQuantity"
-                    android:hint="0"/>
+                    android:hint="@string/hint_zero"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:textAlignment="center"
+                    android:textAppearance="?android:textAppearanceMedium"/>
+
                 <Button
                     android:id="@+id/buttonIncreaseQuantity"
                     android:layout_width="48dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
-                    android:text="+"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:textAppearance="?android:textAppearanceLarge"/>
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="@string/button_label_increase"
+                    android:textAppearance="?android:textAppearanceLarge" />
             </RelativeLayout>
 
             <EditText
@@ -134,13 +124,13 @@
         </LinearLayout>
     </LinearLayout>
 
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabDeleteProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutInputFields"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         style="@style/ButtonStyle"
         android:src="@drawable/ic_delete_product"/>
 
@@ -150,6 +140,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutInputFields"
         android:layout_toLeftOf="@id/fabSaveProduct"
+        android:layout_toStartOf="@id/fabSaveProduct"
         style="@style/ButtonStyle"
         android:src="@drawable/ic_order_product_call"/>
 
@@ -159,6 +150,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutInputFields"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         style="@style/ButtonStyle"
         android:src="@drawable/ic_save_product"/>
 

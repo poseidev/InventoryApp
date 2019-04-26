@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -12,7 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
@@ -42,6 +45,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         initializeListView();
 
         LoaderManager.getInstance(this).initLoader(INVENTORY_LOADER, null, this);
+    }
+
+    private void setColumnLabelsVisibility(int visibility) {
+        View columnLabelsLayout = findViewById(R.id.listColumnLabels);
+        TextView textProductNameLabel = findViewById(R.id.textProductNameLabel);
+        TextView textProductQuantityLabel = findViewById(R.id.textProductQuantityLabel);
+        TextView textProductPriceLabel = findViewById(R.id.textProductPriceLabel);
+
+
+        textProductNameLabel.setVisibility(visibility);
+        textProductPriceLabel.setVisibility(visibility);
+        textProductQuantityLabel.setVisibility(visibility);
+        columnLabelsLayout.setVisibility(visibility);
     }
 
     private void initializeListView() {
@@ -91,6 +107,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mAdapter.swapCursor(cursor);
+
+        // Set list column labels visibility
+        if(mAdapter.getCount() > 0) {
+            setColumnLabelsVisibility(View.VISIBLE);
+        }
+        else {
+            setColumnLabelsVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

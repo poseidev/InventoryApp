@@ -3,7 +3,6 @@ package com.example.android.inventoryapp;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -11,11 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
+
+import java.util.Locale;
 
 public class InventoryCursorAdapter extends CursorAdapter {
 
@@ -62,13 +61,14 @@ public class InventoryCursorAdapter extends CursorAdapter {
         TextView productPriceTextView = view.findViewById(R.id.textProductPrice);
 
         productNameTextView.setText(name);
-        productQuantityTextView.setText(Integer.toString(quantity));
-        productPriceTextView.setText(Double.toString(price));
+        productQuantityTextView.setText(String.format(Locale.getDefault(), "%1$d", quantity));
+        productPriceTextView.setText(String.format(Locale.getDefault(), "%1$.2f", price));
 
         Button saleButton = view.findViewById(R.id.buttonSale);
 
         final Context contextTemp = context;
 
+        // Sale button that decreases the quantity by 1
         saleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
