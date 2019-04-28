@@ -37,4 +37,8 @@
     <string name="activity_title_add_new_product">Add New Product</string>
     <string name="activity_title_update_product">Update Product</string>
     <string name="input_value_zero">0</string>
+    <string name="label_field_image">Image</string>
+    <string name="button_label_choose_image">Choose image</string>
+    <string name="button_label_remove_image">Remove Image</string>
+    <string name="content_description_image_selected">Image selected from gallery</string>
 </resources>

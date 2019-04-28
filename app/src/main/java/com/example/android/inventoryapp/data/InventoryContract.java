@@ -54,5 +54,7 @@ public final class InventoryContract {
         public static final String COLUMN_PRODUCT_QUANTITY ="quantity";
 
         public static final String COLUMN_PRODUCT_PRICE ="price";
+
+        public static final String COLUMN_PRODUCT_IMAGE ="image";
     }
 }

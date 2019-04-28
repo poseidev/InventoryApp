@@ -21,13 +21,15 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
             InventoryEntry.COLUMN_PRODUCT_NAME + " TEXT NOT NULL, " +
             InventoryEntry.COLUMN_PRODUCT_DESCRIPTION + " TEXT, " +
             InventoryEntry.COLUMN_PRODUCT_PRICE + " REAL NOT NULL DEFAULT 0, " +
-            InventoryEntry.COLUMN_PRODUCT_QUANTITY + " TEXT NOT NULL DEFAULT 0)";
+            InventoryEntry.COLUMN_PRODUCT_QUANTITY + " TEXT NOT NULL DEFAULT 0,"+
+            InventoryEntry.COLUMN_PRODUCT_IMAGE + " BLOB)";
 
         db.execSQL(SQL_CREATE_PETS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-
+        db.execSQL("DROP TABLE IF EXISTS " + InventoryEntry.TABLE_NAME);
+        onCreate(db);
     }
 }

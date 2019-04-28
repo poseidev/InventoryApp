@@ -9,70 +9,80 @@
         android:id="@+id/layoutInputFields"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <!-- Field labels -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <!-- Name label -->
-            <TextView
-                android:id="@+id/labelProductName"
-                android:text="@string/label_field_name"
-                android:layout_weight="1"
-                style="@style/LabelOnTopStart"/>
+        android:orientation="vertical">
 
-            <!-- Description label -->
-            <TextView
-                android:id="@+id/labelProductDescription"
-                android:text="@string/label_field_description"
-                android:layout_weight="1"
-                style="@style/TextProductDetail"/>
-
-            <!-- Quantity label -->
-            <TextView
-                android:id="@+id/labelProductQuantity"
-                android:text="@string/label_field_quantity"
-                android:layout_weight="1"
-                style="@style/TextProductDetail"/>
-
-            <TextView
-                android:id="@+id/labelProductPrice"
-                android:text="@string/label_field_price"
-                android:layout_weight="1"
-                style="@style/TextProductDetail"/>
-        </LinearLayout>
-
-        <!-- Input fields -->
+        <!-- Name -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <!-- Name -->
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <!-- Label -->
+            <TextView
+                android:id="@+id/labelProductName"
+                android:text="@string/label_field_name"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/LabelOnTopStart"/>
+
+            <!-- Input field -->
             <EditText
                 android:id="@+id/editProductName"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
                 android:inputType="text"
                 android:hint="@string/hint_name"
-                style="@style/InputFieldTop"/>
+                style="@style/InputFieldOnTop"/>
+        </LinearLayout>
 
-            <!-- Description -->
+        <!-- Description -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Label -->
+            <TextView
+                android:id="@+id/labelProductDescription"
+                android:text="@string/label_field_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/LabelOnStart"/>
+
+            <!-- Input field -->
             <EditText
                 android:id="@+id/editProductDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
                 android:inputType="text"
                 android:hint="@string/hint_product_description"
                 style="@style/InputField"/>
+        </LinearLayout>
+
+        <!-- Quantity -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Label -->
+            <TextView
+                android:id="@+id/labelProductQuantity"
+                android:text="@string/label_field_quantity"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/LabelOnStart"/>
 
             <!-- Quantity -->
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
 
                 <TextView
                     android:id="@+id/editProductQuantityDisplay"
@@ -111,16 +121,83 @@
                     android:text="@string/button_label_increase"
                     android:textAppearance="?android:textAppearanceLarge" />
             </RelativeLayout>
+        </LinearLayout>
+
+        <!-- Price -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Label -->
+            <TextView
+                android:id="@+id/labelProductPrice"
+                android:text="@string/label_field_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/LabelOnStart"/>
 
             <EditText
                 android:id="@+id/editProductPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
                 android:inputType="numberDecimal"
-                android:hint="@string/hint_product_price"
-                style="@style/InputField"/>
+                android:hint="@string/hint_product_price" />
+                <!--style="@style/InputField"/>-->
+        </LinearLayout>
 
+        <!-- Image -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Image label -->
+            <TextView
+                android:id="@+id/labelProductImage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/label_field_image"
+                style="@style/LabelOnStart"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
+                <Button
+                    android:id="@+id/buttonChooseImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_label_choose_image"/>
+                <Button
+                    android:id="@+id/buttonRemoveImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_label_remove_image"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                style="@style/LabelOnStart"/>
+
+            <ImageView
+                android:id="@+id/imageProduct"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:scaleType="fitStart"
+                android:contentDescription="@string/content_description_image_selected"
+                style="@style/InputField"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -131,7 +208,7 @@
         android:layout_below="@+id/layoutInputFields"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        style="@style/ButtonStyle"
+        style="@style/FloatingButtonStyle"
         android:src="@drawable/ic_delete_product"/>
 
     <android.support.design.widget.FloatingActionButton
@@ -141,7 +218,7 @@
         android:layout_below="@id/layoutInputFields"
         android:layout_toLeftOf="@id/fabSaveProduct"
         android:layout_toStartOf="@id/fabSaveProduct"
-        style="@style/ButtonStyle"
+        style="@style/FloatingButtonStyle"
         android:src="@drawable/ic_order_product_call"/>
 
     <android.support.design.widget.FloatingActionButton
@@ -151,7 +228,7 @@
         android:layout_below="@+id/layoutInputFields"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        style="@style/ButtonStyle"
+        style="@style/FloatingButtonStyle"
         android:src="@drawable/ic_save_product"/>
 
 </RelativeLayout>

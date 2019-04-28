@@ -1,26 +1,41 @@
 package com.example.android.inventoryapp;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 
 public class ProductDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -35,11 +50,13 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
 
     private EditText mProductQuantityUpdate;
 
-    private static final int INVENTORY_LOADER = 0;
+    private ImageView mProductImage;
 
     private Uri mCurrentUri;
 
     private String mProductNameString;
+
+    private final static String LOG_TAG = ProductDetailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +71,8 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
 
         mProductQuantityUpdate = findViewById(R.id.editProductQuantity);
 
+        mProductImage = findViewById(R.id.imageProduct);
+
         // Get current URI
         Intent intent = getIntent();
         mCurrentUri = intent.getData();
@@ -67,7 +86,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         else {
             setTitle(R.string.activity_title_update_product);
 
-            LoaderManager.getInstance(this).initLoader(INVENTORY_LOADER, null, this);
+            LoaderManager.getInstance(this).initLoader(Constants.INVENTORY_LOADER, null, this);
         }
 
         initializeButtonsClickListeners();
@@ -77,7 +96,103 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         setOrderButtonVisibility();
     }
 
+    private void logMessage(String message) {
+        Log.v(LOG_TAG ,message);
+    }
+
+    private void setImage(Uri uri) {
+        try {
+            mProductImage.setImageBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), uri));
+        } catch (IOException e) {
+            logMessage(e.getMessage());
+
+            showMessage(e.getMessage());
+        }
+    }
+
+    private void removeImage() {
+        mProductImage.setImageResource(0);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == Constants.REQUESTCODE_CHOOSE_IMAGE) {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                launchImageChooser();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
+
+        if(requestCode == Constants.REQUESTCODE_CHOOSE_IMAGE  && intent != null) {
+            removeImage();
+            setImage(intent.getData());
+        }
+    }
+
+    private void executeReadImagePermissionCheck() {
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                showMessage("Request not granted");
+            }
+            else {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
+                        Constants.REQUESTCODE_CHOOSE_IMAGE);
+            }
+        }
+        else {
+            launchImageChooser();
+        }
+    }
+
+    private void launchImageChooser() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(intent, Constants.REQUESTCODE_CHOOSE_IMAGE);
+    }
+
     private void initializeButtonsClickListeners() {
+        // Decrease quantity button
+        Button increaseQuantityButton = findViewById(R.id.buttonIncreaseQuantity);
+        increaseQuantityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setProductQuantity(true);
+            }
+        });
+
+        // Increase quantity button
+        Button decreaseQuantityButton = findViewById(R.id.buttonDecreaseQuantity);
+        decreaseQuantityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setProductQuantity(false);
+            }
+        });
+
+        Button buttonChooseImage = findViewById(R.id.buttonChooseImage);
+        buttonChooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                executeReadImagePermissionCheck();
+            }
+        });
+
+        Button buttonRemoveImage = findViewById(R.id.buttonRemoveImage);
+        buttonRemoveImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeImage();
+            }
+        });
+
         // Delete button
         FloatingActionButton fabDeleteProduct = findViewById(R.id.fabDeleteProduct);
         fabDeleteProduct.setOnClickListener(new View.OnClickListener() {
@@ -120,24 +235,6 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
                 saveProduct(mCurrentUri);
             }
         });
-
-        // Decrease quantity button
-        Button increaseQuantityButton = findViewById(R.id.buttonIncreaseQuantity);
-        increaseQuantityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setProductQuantity(true);
-            }
-        });
-
-        // Increase quantity button
-        Button decreaseQuantityButton = findViewById(R.id.buttonDecreaseQuantity);
-        decreaseQuantityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setProductQuantity(false);
-            }
-        });
     }
 
     private void setDeleteButtonVisibility() {
@@ -169,6 +266,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         mProductDescription.getText().clear();
         mProductQuantity.setText("");
         mProductPrice.getText().clear();
+        removeImage();
     }
 
     /**
@@ -227,11 +325,22 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         String priceString = mProductPrice.getText().toString().trim();
         Double price = TextUtils.isEmpty(priceString) ?  0 : Double.parseDouble(priceString);
 
+        BitmapDrawable imageDrawable = (BitmapDrawable)mProductImage.getDrawable();
+        byte[] imageByteArray = null;
+
+        if(imageDrawable != null) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            Bitmap bitmap = imageDrawable.getBitmap();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 0, outputStream);
+            imageByteArray = outputStream.toByteArray();
+        }
+
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_PRODUCT_NAME, name);
         values.put(InventoryEntry.COLUMN_PRODUCT_DESCRIPTION, description);
         values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, quantity);
         values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, price);
+        values.put(InventoryEntry.COLUMN_PRODUCT_IMAGE, imageByteArray);
 
         return values;
     }
@@ -324,7 +433,8 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
                 InventoryEntry.COLUMN_PRODUCT_NAME,
                 InventoryEntry.COLUMN_PRODUCT_DESCRIPTION,
                 InventoryEntry.COLUMN_PRODUCT_QUANTITY,
-                InventoryEntry.COLUMN_PRODUCT_PRICE};
+                InventoryEntry.COLUMN_PRODUCT_PRICE,
+                InventoryEntry.COLUMN_PRODUCT_IMAGE};
 
         return new CursorLoader(this,
                 mCurrentUri,
@@ -346,11 +456,14 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             int descriptionColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_DESCRIPTION);
             int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_QUANTITY);
             int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_PRICE);
+            int productImageColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_IMAGE);
 
             String name = cursor.getString(nameColumnIndex);
             String description = cursor.getString(descriptionColumnIndex);
             int quantity = cursor.getInt(quantityColumnIndex);
             Double price = cursor.getDouble(priceColumnIndex);
+
+            byte[] imageByte = cursor.getBlob(productImageColumnIndex);
 
             String quantityString = String.valueOf(quantity);
             quantityString = TextUtils.isEmpty(quantityString) ? "0" : quantityString;
@@ -361,6 +474,11 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             mProductDescription.setText(description);
             mProductQuantity.setText(quantityString);
             mProductPrice.setText(priceString);
+
+            if(imageByte != null) {
+                Bitmap image = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length);
+                mProductImage.setImageBitmap(image);
+            }
 
             mProductNameString = name;
         }

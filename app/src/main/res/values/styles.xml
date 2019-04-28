@@ -28,8 +28,6 @@
     </style>
 
     <style name="LabelOnTopStart">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">0dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:layout_marginLeft">16dp</item>
@@ -37,7 +35,18 @@
         <item name="android:layout_marginRight">4dp</item>
         <item name="android:layout_marginEnd">4dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+    </style>
+
+    <style name="LabelOnStart">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
     </style>
 
     <style name="TextProductDetail">
@@ -80,39 +89,40 @@
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
     </style>
 
-    <style name="InputFieldTop">
+    <style name="InputFieldOnTop">
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:layout_marginLeft">12dp</item>
-        <item name="android:layout_marginStart">12dp</item>
-        <item name="android:layout_marginRight">4dp</item>
-        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
 
     <style name="InputField">
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:layout_marginLeft">12dp</item>
-        <item name="android:layout_marginStart">12dp</item>
-        <item name="android:layout_marginRight">4dp</item>
-        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
 
     <style name="InputFieldQuantity">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:layout_marginLeft">12dp</item>
-        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginStart">4dp</item>
         <item name="android:layout_marginRight">4dp</item>
         <item name="android:layout_marginEnd">4dp</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
-    <style name="ButtonStyle">
+
+    <style name="FloatingButtonStyle">
         <item name="android:layout_margin">12dp</item>
     </style>
 
