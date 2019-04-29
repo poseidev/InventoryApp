@@ -41,4 +41,5 @@
     <string name="button_label_choose_image">Choose image</string>
     <string name="button_label_remove_image">Remove Image</string>
     <string name="content_description_image_selected">Image selected from gallery</string>
+    <string name="message_gallery_access_not_granted">Gallery access not granted.</string>
 </resources>

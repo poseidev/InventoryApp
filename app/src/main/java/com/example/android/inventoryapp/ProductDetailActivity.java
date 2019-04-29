@@ -5,13 +5,10 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -26,7 +23,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -132,13 +128,21 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         mProductImage.setImageResource(0);
     }
 
+    private void startImageChooserActivity() {
+        // If user doesn't select any image from gallery original image on the ImageView remains via onResume
+        BitmapDrawable currentDrawable = (BitmapDrawable)mProductImage.getDrawable();
+        mBitmap = (currentDrawable != null) ? currentDrawable.getBitmap() : null;
+
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(intent, Constants.REQUESTCODE_CHOOSE_IMAGE);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == Constants.REQUESTCODE_CHOOSE_IMAGE) {
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(intent, Constants.REQUESTCODE_CHOOSE_IMAGE);
+                startImageChooserActivity();
             }
         }
     }
@@ -160,7 +164,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
                 PackageManager.PERMISSION_GRANTED) {
 
             if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                showMessage("Request not granted");
+                showMessage(getString(R.string.message_gallery_access_not_granted));
             }
             else {
                 ActivityCompat.requestPermissions(
@@ -182,9 +186,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             return;
         }
 
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-        startActivityForResult(intent, Constants.REQUESTCODE_CHOOSE_IMAGE);
+        startImageChooserActivity();
     }
 
     private void initializeButtonsClickListeners() {
@@ -355,11 +357,12 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         Double price = TextUtils.isEmpty(priceString) ?  0 : Double.parseDouble(priceString);
 
         BitmapDrawable imageDrawable = (BitmapDrawable)mProductImage.getDrawable();
+        Bitmap bitmap = (imageDrawable != null) ? imageDrawable.getBitmap() : null;
+
         byte[] imageByteArray = null;
 
-        if(imageDrawable != null) {
+        if(bitmap != null) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            Bitmap bitmap = imageDrawable.getBitmap();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 0, outputStream);
             imageByteArray = outputStream.toByteArray();
         }
