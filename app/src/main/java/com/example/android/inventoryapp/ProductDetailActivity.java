@@ -5,11 +5,13 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,6 +26,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +39,7 @@ import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 
 public class ProductDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -57,6 +61,15 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
     private String mProductNameString;
 
     private final static String LOG_TAG = ProductDetailActivity.class.getSimpleName();
+
+    private Bitmap mBitmap;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mProductImage.setImageBitmap(mBitmap);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +115,12 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
 
     private void setImage(Uri uri) {
         try {
-            mProductImage.setImageBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), uri));
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+            mBitmap = bitmap;
+
+            mProductImage.setImageBitmap(bitmap);
+
         } catch (IOException e) {
             logMessage(e.getMessage());
 
@@ -118,21 +136,25 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == Constants.REQUESTCODE_CHOOSE_IMAGE) {
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                launchImageChooser();
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(intent, Constants.REQUESTCODE_CHOOSE_IMAGE);
             }
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
 
         if(requestCode == Constants.REQUESTCODE_CHOOSE_IMAGE  && intent != null) {
-            removeImage();
             setImage(intent.getData());
         }
     }
 
-    private void executeReadImagePermissionCheck() {
+    private boolean isAllowedReadExternalStorage() {
+
+        boolean isAllowed = false;
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED) {
@@ -148,11 +170,18 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             }
         }
         else {
-            launchImageChooser();
+            isAllowed = true;
         }
+
+        return isAllowed;
     }
 
     private void launchImageChooser() {
+
+        if(!isAllowedReadExternalStorage()) {
+            return;
+        }
+
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         startActivityForResult(intent, Constants.REQUESTCODE_CHOOSE_IMAGE);
@@ -181,7 +210,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         buttonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                executeReadImagePermissionCheck();
+                launchImageChooser();
             }
         });
 

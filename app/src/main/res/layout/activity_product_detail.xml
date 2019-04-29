@@ -144,8 +144,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:inputType="numberDecimal"
-                android:hint="@string/hint_product_price" />
-                <!--style="@style/InputField"/>-->
+                android:hint="@string/hint_product_price"
+                style="@style/InputField"/>
         </LinearLayout>
 
         <!-- Image -->
